@@ -137,8 +137,7 @@ class File extends BaseFile
 	    if(isset($options['alternate']))
 	    {
 			$xmlCode .= '<xhtml:link rel="alternate"'.
-								((isset($options['alternate']['media'])) ? 'media="'.$options['alternate']['media'] : '').'"
-								href="'.$options['alternate']['url'].'" />' . PHP_EOL;
+			((isset($options['alternate']['media'])) ? ' media="'.$options['alternate']['media'] : '').'" href="'.$options['alternate']['url'].'" />' . PHP_EOL;
 	    }
 
         $xmlCode .= '</url>' . PHP_EOL;
