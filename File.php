@@ -47,7 +47,11 @@ class File extends BaseFile
      * @var array default options for [[writeUrl()]].
      */
     public $defaultOptions = [];
-
+	/*[
+		'lastModified' => date('Y-m-d'),
+		'changeFrequency' => self::CHECK_FREQUENCY_DAILY,
+		'priority' => '0.5',
+	]*/
 
 	protected $schema = [];
 
@@ -101,21 +105,18 @@ class File extends BaseFile
         $xmlCode .= "<loc>{$url}</loc>" . PHP_EOL;
 
         $options = array_merge(
-            [
-                'lastModified' => date('Y-m-d'),
-                'changeFrequency' => self::CHECK_FREQUENCY_DAILY,
-                'priority' => '0.5',
-            ],
             $this->defaultOptions,
             $options
         );
-        if (ctype_digit($options['lastModified'])) {
-            $options['lastModified'] = date('Y-m-d', $options['lastModified']);
-        }
 
-        $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>" . PHP_EOL;
-        $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>" . PHP_EOL;
-        $xmlCode .= "<priority>{$options['priority']}</priority>" . PHP_EOL;
+	    if(isset($options['changeFrequency']))
+		    $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>" . PHP_EOL;
+	    if(isset($options['lastModified']) && ctype_digit($options['lastModified'])) {
+		    $options['lastModified'] = date('Y-m-d', $options['lastModified']);
+		    $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>" . PHP_EOL;
+	    }
+	    if(isset($options['priority']))
+            $xmlCode .= "<priority>{$options['priority']}</priority>" . PHP_EOL;
 
 	    if(isset($options['news']))
 	    {
