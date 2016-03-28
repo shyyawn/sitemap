@@ -109,10 +109,12 @@ class File extends BaseFile
             $options
         );
 
+	    if(ctype_digit($options['lastModified']))
+		    $options['lastModified'] = date('Y-m-d', $options['lastModified']);
+
 	    if(isset($options['changeFrequency']))
 		    $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>" . PHP_EOL;
-	    if(isset($options['lastModified']) && ctype_digit($options['lastModified'])) {
-		    $options['lastModified'] = date('Y-m-d', $options['lastModified']);
+	    if(isset($options['lastModified'])) {
 		    $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>" . PHP_EOL;
 	    }
 	    if(isset($options['priority']))
