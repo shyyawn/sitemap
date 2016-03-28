@@ -44,6 +44,13 @@ class IndexFile extends BaseFile
      * @var string name of the site map file.
      */
     public $fileName = 'sitemap_index.xml';
+
+	/**
+	 * @var string directory, which should be used to store generated site map index file.
+	 * By default '@app/web/sitemap' will be used.
+	 */
+	public $indexBasePath = '@app/web/sitemap';
+
     /**
      * @var string base URL for the directory, which contains the site map files.
      */
@@ -88,6 +95,15 @@ class IndexFile extends BaseFile
         parent::afterOpen();
         $this->write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL);
     }
+
+	/**
+	 * Returns the full file name.
+	 * @return string full file name.
+	 */
+	public function getFullFileName()
+	{
+		return Yii::getAlias($this->indexBasePath) . DIRECTORY_SEPARATOR . $this->fileName;
+	}
 
     /**
      * @inheritdoc
@@ -144,9 +160,16 @@ class IndexFile extends BaseFile
         $fileBaseUrl = rtrim($this->getFileBaseUrl(), '/');
         $indexFileName = $this->getFullFileName();
         foreach ($files as $file) {
+
             if ($file === $indexFileName) {
                 continue;
             }
+
+	        // compress files
+	        file_put_contents($file.'.gz', gzencode(file_get_contents($file), 9));
+	        unlink($file);
+	        $file = $file.'.gz';
+
             $fileUrl = $fileBaseUrl . '/' . basename($file);
             $lastModifiedDate = date('Y-m-d', filemtime($file));
             $this->writeSiteMap($fileUrl, $lastModifiedDate);
