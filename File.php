@@ -49,6 +49,8 @@ class File extends BaseFile
     public $defaultOptions = [];
 
 
+	protected $schema = [];
+
     /**
      * @inheritdoc
      */
@@ -95,8 +97,8 @@ class File extends BaseFile
             $url = $this->getUrlManager()->createAbsoluteUrl($url);
         }
 
-        $xmlCode = '<url>';
-        $xmlCode .= "<loc>{$url}</loc>";
+        $xmlCode = '<url>' . PHP_EOL;
+        $xmlCode .= "<loc>{$url}</loc>" . PHP_EOL;
 
         $options = array_merge(
             [
@@ -111,11 +113,32 @@ class File extends BaseFile
             $options['lastModified'] = date('Y-m-d', $options['lastModified']);
         }
 
-        $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>";
-        $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>";
-        $xmlCode .= "<priority>{$options['priority']}</priority>";
+        $xmlCode .= "<lastmod>{$options['lastModified']}</lastmod>" . PHP_EOL;
+        $xmlCode .= "<changefreq>{$options['changeFrequency']}</changefreq>" . PHP_EOL;
+        $xmlCode .= "<priority>{$options['priority']}</priority>" . PHP_EOL;
 
-        $xmlCode .= '</url>';
+	    if(isset($options['news']))
+	    {
+		    $xmlCode .= '<news:news>' . PHP_EOL;
+		    $xmlCode .= '   <news:publication>' . PHP_EOL;
+		    $xmlCode .= '       <news:name>' . $options['news']['name'] . '</news:name>' . PHP_EOL;
+		    $xmlCode .= '       <news:language>' . $options['news']['language'] .'</news:language>' . PHP_EOL;
+		    $xmlCode .= '   </news:publication>' . PHP_EOL;
+		    $xmlCode .= '   <news:genres>' . $options['news']['genres'] .'</news:genres>' . PHP_EOL;
+		    $xmlCode .= '   <news:publication_date>' .  $options['news']['publicationDate']  . '</news:publication_date>' . PHP_EOL;
+		    $xmlCode .= '   <news:title><![CDATA[' . trim($options['news']['title']) . ']]></news:title>' . PHP_EOL;
+		    $xmlCode .= '   <news:keywords><![CDATA[' . trim($options['news']['keywords']) . ']]></news:keywords>' . PHP_EOL;
+		    $xmlCode .= '</news:news>' . PHP_EOL;
+	    }
+
+	    if(isset($options['alternate']))
+	    {
+			$xmlCode .= '<xhtml:link rel="alternate"'.
+								((isset($options['alternate']['media'])) ? 'media="'.$options['alternate']['media'] : '').'"
+								href="'.$options['alternate']['url'].'" />' . PHP_EOL;
+	    }
+
+        $xmlCode .= '</url>' . PHP_EOL;
         return $this->write($xmlCode);
     }
 }

@@ -5,3 +5,9 @@ Yii 2 Site Map extension Change Log
 ------------------------
 
 - Initial release.
+
+
+1.0.1, March 28, 2016
+------------------------
+
+- Added News and Alternate Support

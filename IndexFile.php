@@ -86,7 +86,7 @@ class IndexFile extends BaseFile
     protected function afterOpen()
     {
         parent::afterOpen();
-        $this->write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+        $this->write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL);
     }
 
     /**
@@ -94,7 +94,7 @@ class IndexFile extends BaseFile
      */
     protected function beforeClose()
     {
-        $this->write('</sitemapindex>');
+        $this->write('</sitemapindex>' . PHP_EOL);
         parent::beforeClose();
     }
 
@@ -108,15 +108,15 @@ class IndexFile extends BaseFile
     public function writeSiteMap($siteMapFileUrl, $lastModifiedDate = null)
     {
         $this->incrementEntriesCount();
-        $xmlCode = '<sitemap>';
-        $xmlCode .= "<loc>{$siteMapFileUrl}</loc>";
+        $xmlCode = '<sitemap>' . PHP_EOL;
+        $xmlCode .= "<loc>{$siteMapFileUrl}</loc>" . PHP_EOL;
         if ($lastModifiedDate === null) {
             $lastModifiedDate = date('Y-m-d');
         } elseif (ctype_digit($lastModifiedDate)) {
             $lastModifiedDate = date('Y-m-d', $lastModifiedDate);
         }
-        $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>";
-        $xmlCode .= '</sitemap>';
+        $xmlCode .= "<lastmod>{$lastModifiedDate}</lastmod>" . PHP_EOL;
+        $xmlCode .= '</sitemap>' . PHP_EOL;
         return $this->write($xmlCode);
     }
 
