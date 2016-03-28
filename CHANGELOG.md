@@ -11,3 +11,9 @@ Yii 2 Site Map extension Change Log
 ------------------------
 
 - Added News and Alternate Support
+
+
+1.0.2, March 28, 2016
+------------------------
+
+- Added compression and ability to set custom Index Path
