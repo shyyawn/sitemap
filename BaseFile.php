@@ -173,10 +173,10 @@ abstract class BaseFile extends Object
             fclose($this->_fileHandler);
             $this->_fileHandler = null;
             $this->_entriesCount = 0;
-            $fileSize = filesize($this->getFullFileName());
+            /*$fileSize = filesize($this->getFullFileName());
             if ($fileSize > self::MAX_FILE_SIZE) {
                 throw new Exception('File "'.$this->getFullFileName().'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
-            }
+            }*/
         }
         return true;
     }

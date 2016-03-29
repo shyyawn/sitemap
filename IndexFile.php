@@ -167,6 +167,10 @@ class IndexFile extends BaseFile
 
 	        // compress files
 	        file_put_contents($file.'.gz', gzencode(file_get_contents($file), 9));
+	        $fileSize = filesize($file.'.gz');
+	        if ($fileSize > self::MAX_FILE_SIZE) {
+		        throw new Exception('File "'.$file.'.gz'.'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
+	        }
 	        unlink($file);
 	        $file = $file.'.gz';
 
