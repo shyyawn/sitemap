@@ -109,7 +109,7 @@ class File extends BaseFile
             $options
         );
 
-	    if(ctype_digit($options['lastModified']))
+	    if(isset($options['lastModified']) && ctype_digit($options['lastModified']))
 		    $options['lastModified'] = date('Y-m-d', $options['lastModified']);
 
 	    if(isset($options['changeFrequency']))
