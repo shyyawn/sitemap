@@ -61,7 +61,7 @@ class File extends BaseFile
     protected function afterOpen()
     {
         parent::afterOpen();
-        $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+        $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">');
     }
 
     /**
