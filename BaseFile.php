@@ -58,6 +58,11 @@ abstract class BaseFile extends Object
      */
     private $_urlManager = 'urlManager';
 
+	/**
+	 * @var bool to identify if its a news or not
+	 */
+	protected $isNews = false;
+
 
     /**
      * Destructor.

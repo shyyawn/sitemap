@@ -61,7 +61,8 @@ class File extends BaseFile
     protected function afterOpen()
     {
         parent::afterOpen();
-        $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">');
+	    $namespaces = ($this->isNews) ? ' xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"' : '';
+        $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"'.$namespaces.'>');
     }
 
     /**
@@ -122,6 +123,7 @@ class File extends BaseFile
 
 	    if(isset($options['news']))
 	    {
+		    $this->isNews = true;
 		    $xmlCode .= '<news:news>' . PHP_EOL;
 		    $xmlCode .= '   <news:publication>' . PHP_EOL;
 		    $xmlCode .= '       <news:name>' . $options['news']['name'] . '</news:name>' . PHP_EOL;
