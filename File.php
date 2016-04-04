@@ -136,6 +136,19 @@ class File extends BaseFile
 		    $xmlCode .= '</news:news>' . PHP_EOL;
 	    }
 
+	    if(isset($options['images']) && is_array($options['images']) && count($options['images']) > 0)
+	    {
+			foreach($options['images'] as $image) {
+				$xmlCode .= '<image:image>' . PHP_EOL;
+				if(isset($image['location']))   $xmlCode .= '   <image:loc><![CDATA[' . $image['location'] . ']]></image:loc>' . PHP_EOL;
+				if(isset($image['caption']))   $xmlCode .= '   <image:caption><![CDATA[' . $image['caption'] . ']]></image:caption>' . PHP_EOL;
+				if(isset($image['geoLocation']))   $xmlCode .= '   <image:geo_location>' . $image['geoLocation'] . '</image:geo_location>' . PHP_EOL;
+				if(isset($image['title']))   $xmlCode .= '   <image:title><![CDATA[' . $image['title'] . ']]></image:title>' . PHP_EOL;
+				if(isset($image['license']))   $xmlCode .= '   <image:license><![CDATA[' . $image['license'] . ']]></image:license>' . PHP_EOL;
+				$xmlCode .= '</image:image>' . PHP_EOL;
+			}
+	    }
+
 	    if(isset($options['alternate']))
 	    {
 			$xmlCode .= '<xhtml:link rel="alternate"'.
