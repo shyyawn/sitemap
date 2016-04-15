@@ -62,6 +62,7 @@ class File extends BaseFile
     {
         parent::afterOpen();
 	    $namespaces = ($this->isNews) ? ' xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"' : '';
+	    $namespaces .= ($this->hasImages) ? ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"' : '';
         $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"'.$namespaces.'>');
     }
 
@@ -138,6 +139,7 @@ class File extends BaseFile
 
 	    if(isset($options['images']) && is_array($options['images']) && count($options['images']) > 0)
 	    {
+		    $this->hasImages = true;
 			foreach($options['images'] as $image) {
 				$xmlCode .= '<image:image>' . PHP_EOL;
 				if(isset($image['location']))   $xmlCode .= '   <image:loc><![CDATA[' . $image['location'] . ']]></image:loc>' . PHP_EOL;

@@ -63,6 +63,11 @@ abstract class BaseFile extends Object
 	 */
 	protected $isNews = false;
 
+	/**
+	 * @var bool to identify if its images or not
+	 */
+	protected $hasImages = false;
+
 
     /**
      * Destructor.
