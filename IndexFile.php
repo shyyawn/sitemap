@@ -146,10 +146,24 @@ class IndexFile extends BaseFile
     {
         $path = Yii::getAlias($path);
 
+
+	    // Now the compressed files
+	    $findOptions = [
+		    'only' => [
+			    '*.gz'
+		    ],
+	    ];
+
+	    $filesGz = FileHelper::findFiles($path, $findOptions);
+		$fileXml = [];
+	    foreach ($filesGz as $fileGz) {
+		    $fileXml[$fileGz] =  $fileGz;
+	    }
+
+	    // First the xml files
         $findOptions = [
             'only' => [
-                '*.xml',
-                '*.gz'
+                '*.xml'
             ],
         ];
         $files = FileHelper::findFiles($path, $findOptions);
@@ -166,21 +180,29 @@ class IndexFile extends BaseFile
             }
 
 	        // compress files
-	        if(strpos($file, '.gz') === false) {
-		        file_put_contents($file.'.gz', gzencode(file_get_contents($file), 9));
-		        $fileSize = filesize($file.'.gz');
-		        if ($fileSize > self::MAX_FILE_SIZE) {
-			        throw new Exception('File "'.$file.'.gz'.'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
-		        }
-		        unlink($file);
-		        $file = $file.'.gz';
+            file_put_contents($file.'.gz', gzencode(file_get_contents($file), 9));
+	        $fileSize = filesize($file.'.gz');
+	        if ($fileSize > self::MAX_FILE_SIZE) {
+		        throw new Exception('File "'.$file.'.gz'.'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
 	        }
+	        unlink($file);
+	        $file = $file.'.gz';
+
+	        if(isset($fileXml[$file]))  unset($fileXml[$file]);
 
             $fileUrl = $fileBaseUrl . '/' . basename($file);
             $lastModifiedDate = date('Y-m-d', filemtime($file));
             $this->writeSiteMap($fileUrl, $lastModifiedDate);
             $siteMapsCount++;
         }
+
+	    foreach ($fileXml as $file) {
+		    $fileUrl = $fileBaseUrl . '/' . basename($file);
+		    $lastModifiedDate = date('Y-m-d', filemtime($file));
+		    $this->writeSiteMap($fileUrl, $lastModifiedDate);
+		    $siteMapsCount++;
+	    }
+
         $this->close();
         return $siteMapsCount;
     }
