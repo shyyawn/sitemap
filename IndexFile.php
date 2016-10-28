@@ -173,8 +173,8 @@ class IndexFile extends BaseFile
 			        throw new Exception('File "'.$file.'.gz'.'" has exceed the size limit of "'.self::MAX_FILE_SIZE.'": actual file size: "'.$fileSize.'".');
 		        }
 		        unlink($file);
+		        $file = $file.'.gz';
 	        }
-	        $file = $file.'.gz';
 
             $fileUrl = $fileBaseUrl . '/' . basename($file);
             $lastModifiedDate = date('Y-m-d', filemtime($file));
