@@ -68,6 +68,11 @@ abstract class BaseFile extends Object
 	 */
 	protected $hasImages = false;
 
+	/**
+	 * @var bool to identify if its video or not
+	 */
+	protected $hasVideos = false;
+
 
     /**
      * Destructor.

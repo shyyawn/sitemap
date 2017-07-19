@@ -63,6 +63,7 @@ class File extends BaseFile
         parent::afterOpen();
 	    $namespaces = ($this->isNews) ? ' xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"' : '';
 	    $namespaces .= ($this->hasImages) ? ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"' : '';
+        $namespaces .= ($this->hasVideos) ? ' xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"' : '';
         $this->write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"'.$namespaces.'>');
     }
 
@@ -150,6 +151,27 @@ class File extends BaseFile
 				$xmlCode .= '</image:image>' . PHP_EOL;
 			}
 	    }
+
+        if(isset($options['video']) && is_array($options['video']) && count($options['video']) > 0)
+        {
+            $this->hasVideos = true;
+            $types = ['duration','expiration_date', 'rating', 'view_count', 'publication_date', 'family_friendly', 'tag', 'category', 'restriction',
+                'gallery_loc', 'price', 'requires_subscription', 'uploader', 'platform', 'live', ];
+            foreach($options['video'] as $video) {
+                $xmlCode .= '<video:video>' . PHP_EOL;
+                $xmlCode .= '   <video:thumbnail_loc><![CDATA[' . $video['thumbnail_loc'] . ']]></video:thumbnail_loc>' . PHP_EOL;
+                $xmlCode .= '   <video:title><![CDATA[' . $video['title'] . ']]></video:title>' . PHP_EOL;
+                $xmlCode .= '   <video:description><![CDATA[' . $video['description'] . ']]></video:description>' . PHP_EOL;
+
+                if(!isset($video['player_loc']))   $xmlCode .= '   <video:content_loc><![CDATA[' . $video['content_loc'] . ']]></video:content_loc>' . PHP_EOL;
+                elseif(!isset($video['content_loc']))   $xmlCode .= '   <video:player_loc><![CDATA[' . $video['player_loc'] . ']]></video:player_loc>' . PHP_EOL;
+
+                foreach ($types as $type) {
+                    if(isset($video[$type]))   $xmlCode .= '   <video:' .$type. '><![CDATA[' . $video[$type] . ']]></video:' .$type. '>' . PHP_EOL;
+                }
+                $xmlCode .= '</video:video>' . PHP_EOL;
+            }
+        }
 
 	    if(isset($options['alternate']))
 	    {
