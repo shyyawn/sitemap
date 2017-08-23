@@ -175,8 +175,20 @@ class File extends BaseFile
 
 	    if(isset($options['alternate']))
 	    {
-			$xmlCode .= '<xhtml:link rel="alternate"'.
-			((isset($options['alternate']['media'])) ? ' media="'.$options['alternate']['media'] : '').'" href="'.$options['alternate']['url'].'" />' . PHP_EOL;
+			if (isset($options['alternate']['url'])) $options['alternate'] = [$options['alternate']];
+			$options['alternate'] = (array)$options['alternate'];
+
+			foreach ($options['alternate'] as $alternate) {
+				$xmlCode .= '<xhtml:link rel="alternate"'.
+				if (isset($alternate['url']) {
+					$xmlCode .= ' href="'.$alternate['url'].'"';
+					unset($alternate['url']);
+				}
+				foreach ($alternate as $key => $val) {
+					$xmlCode .= ' '.$key.'="'.$val.'"';
+				}
+				$xmlCode .= '/>' . PHP_EOL;
+			}
 	    }
 
         $xmlCode .= '</url>' . PHP_EOL;
