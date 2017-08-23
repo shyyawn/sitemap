@@ -179,8 +179,8 @@ class File extends BaseFile
 			$options['alternate'] = (array)$options['alternate'];
 
 			foreach ($options['alternate'] as $alternate) {
-				$xmlCode .= '<xhtml:link rel="alternate"'.
-				if (isset($alternate['url']) {
+				$xmlCode .= '<xhtml:link rel="alternate"';
+				if (isset($alternate['url'])) {
 					$xmlCode .= ' href="'.$alternate['url'].'"';
 					unset($alternate['url']);
 				}
